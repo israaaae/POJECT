@@ -1,17 +1,16 @@
 # src/poject/api/routes.py
 from flask import Blueprint, request, jsonify
 from ..utils.logger import logger
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 from ..models.chat_request import ChatRequest
 bp = Blueprint("api", __name__)
+from src.poject.services.rag_pipeline import RAGPipeline
 
-# Initialisation différée pour éviter les imports circulaires
 pipeline = None
 
 def get_pipeline():
     global pipeline
     if pipeline is None:
-        from ..services.rag_pipeline import RAGPipeline
         pipeline = RAGPipeline()
     return pipeline
 

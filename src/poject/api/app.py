@@ -9,12 +9,15 @@ def create_app():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     template_dir = os.path.join(base_dir, "templates")
 
-    if not os.path.exists(template_dir):
-        raise RuntimeError(f"Templates directory not found: {template_dir}")
+    # if not os.path.exists(template_dir):
+    # raise RuntimeError(f"Templates directory not found: {template_dir}")
 
+    # création de l'application flask
     app = Flask(__name__, template_folder=template_dir)
     app.register_blueprint(bp, url_prefix="/api")
     app.config["DEBUG"] = settings.DEBUG
+
+
 
     @app.route("/")
     def index():

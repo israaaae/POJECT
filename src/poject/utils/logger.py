@@ -7,7 +7,7 @@ def setup_logger(name: str = "rag") -> Logger:
     """Create and configure a logger for the application."""
     logger = logging.getLogger(name)
     if logger.handlers:
-        return logger  # already configured
+        return logger 
 
     logger.setLevel(logging.INFO)
     fmt = logging.Formatter(

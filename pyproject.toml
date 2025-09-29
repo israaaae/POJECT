@@ -1,7 +1,7 @@
 [project]
 name = "poject"
 version = "0.1.0"
-description = ""
+description = "End-to-End Medical RAG Chatbot | Automated Testing & CI/CD with GitHub Actions + AWS"
 authors = [
     {name = "Israe KHOUI",email = "israekhoui9@gmail.com"}
 ]

@@ -15,28 +15,28 @@ class PineconeStore:
         if not _HAS_PINECONE:
             raise RuntimeError("pinecone-client not installed")
         self.index_name = settings.PINECONE_INDEX
-        
         # Create pinecone instance
-        self.pc = Pinecone(api_key=settings.PINECONE_API_KEY,
-                            environment=settings.PINECONE_ENVIRONMENT)
+        self.pc = Pinecone(api_key=settings.PINECONE_API_KEY,environment=settings.PINECONE_ENVIRONMENT)
         logger.info("Pinecone client initialized, index=%s", self.index_name)
-
         # Verify existing Index
         if self.index_name not in self.pc.list_indexes().names():
             logger.warning(
                 "Index %s not found in Pinecone. Create it in Pinecone console beforehand.",
                 self.index_name
             )
-
         # Retrieve the existed index
         self.index = self.pc.Index(self.index_name)  # Index: I en majuscule
 
-    def upsert(self, vectors: Sequence[Tuple[str, List[float], dict]]) -> None:
+    def fct_upsert(self, vectors: Sequence[Tuple[str, List[float], dict]]) -> None:
         """Upsert list of (id, vector, metadata)"""
         self.index.upsert(vectors=vectors)
 
-    def query(self, vector: List[float], top_k: int):
+    def fct_query(self, vector: List[float], top_k: int):
         """Query the index"""
         resp = self.index.query(vector=vector, top_k=top_k, include_metadata=True)
         matches = resp.get("matches", [])
         return matches
+
+
+# had fct query kat returni les 3 vecteurs (id, score, metadata) sous forme de json les plus similaires dans mon index pinecone
+# si y a pas de matches càd l'user a posé une question qui est hors documents, il va returner [] (vide)
