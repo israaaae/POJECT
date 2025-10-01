@@ -11,7 +11,7 @@ class EmbeddingsService:
         self.model = SentenceTransformer(self.model_name)
 
     def embed_texts(self, texts: Iterable[str]) -> List[List[float]]:
-        """Embed a list of texts -> list of vectors."""
+        """Embed a list of texts to list of vectors."""
         texts = list(texts)
         vectors = self.model.encode(texts, show_progress_bar=True)
         return vectors.tolist()

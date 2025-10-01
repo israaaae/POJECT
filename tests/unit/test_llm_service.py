@@ -2,12 +2,11 @@
 import pytest
 from src.poject.services.llm_service import LLMService
 
+@pytest.mark.unit
 def test_llm_service_chat_returns_text(mocker):
-    """Test que chat() retourne une réponse textuelle"""
     # ARRANGE
     mock_client = mocker.patch("src.poject.services.llm_service.OpenAI")
     
-    # Configurer le mock pour la NOUVELLE API OpenAI
     mock_response = mocker.Mock()
     mock_message = mocker.Mock(content="Réponse simulée de l'IA médicale")
     mock_choice = mocker.Mock(message=mock_message)

@@ -3,9 +3,6 @@
 import pytest
 
 def test_health_endpoint_returns_ok(client):
-    """Test que l'endpoint health fonctionne"""
-    # ARRANGE - client fixture
-    
     # ACT
     response = client.get('/api/health')
 
@@ -13,28 +10,28 @@ def test_health_endpoint_returns_ok(client):
     assert response.status_code == 200
     assert b'ok' in response.data
 
+pytestmark = pytest.mark.integration
 def test_chat_endpoint_answers_questions(client, mocker):
     # ARRANGE
     mock_pipeline = mocker.patch("src.poject.api.routes.get_pipeline")
     mock_pipeline.return_value.ask.return_value = "Réponse à votre question médicale"
-
+    
     # ACT
     response = client.post('/api/chat', json={
         "question": "Traitement pour l'hypertension ?"
     })
-    data = response.get_json()  # décode proprement le JSON
-
+    data = response.get_json()
+    
     # ASSERT
     assert response.status_code == 200
     assert "Réponse" in data["answer"]
+    mock_pipeline.return_value.ask.assert_called_once_with("Traitement pour l'hypertension ?", top_k=3)
 
-
-
-
-# on teste réellement que la route fonctionne et que le template est chargé
 def test_index_endpoint_renders_template(client):
+    # ACT
     response = client.get("/")
+    
+    # ASSERT
     assert response.status_code == 200
-    # Vérifie juste que le contenu ressemble à HTML
-    assert b"<html" in response.data
-    assert b"</html>" in response.data
+    assert b"<html>" in response.data
+

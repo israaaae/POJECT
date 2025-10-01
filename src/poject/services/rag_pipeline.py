@@ -13,10 +13,8 @@ class RAGPipeline:
         logger.info("RAGPipeline initialized")
 
     def ask(self, question: str, top_k: int = 3) -> str:
-        # embed question
         q_emb = self.embedding.embed_texts([question])[0]
         matches = self.store.fct_query(q_emb, top_k=top_k)
-        # build context from metadata (note: depends how you stored metadata)
         context_parts: List[str] = []
         for m in matches:
             meta = m.get("metadata", {})

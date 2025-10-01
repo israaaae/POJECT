@@ -3,11 +3,7 @@ import pytest
 import numpy as np
 from unittest.mock import Mock, patch
 from langchain.docstore.document import Document
-
-
-# -------------------
-# Flask fixtures
-# -------------------
+from datasets import Dataset
 @pytest.fixture
 def app():
     """Application Flask pour les tests"""
@@ -16,16 +12,11 @@ def app():
     app.config['TESTING'] = True
     return app
 
-
 @pytest.fixture
 def client(app):
     """Client de test Flask"""
     return app.test_client()
 
-
-# -------------------
-# Mocks externes
-# -------------------
 @pytest.fixture(autouse=True)
 def mock_sentence_transformers(monkeypatch):
     """Mock global pour SentenceTransformer (évite de charger un vrai modèle)"""
@@ -37,29 +28,35 @@ def mock_sentence_transformers(monkeypatch):
 
 @pytest.fixture
 def mock_embeddings():
-    """Mock pour EmbeddingsService"""
-    with patch("src.poject.services.embeddings.EmbeddingsService") as mock_emb:
+    """Mock pour EmbeddingsService - patch dans RAGPipeline"""
+    with patch("src.poject.services.rag_pipeline.EmbeddingsService") as mock_emb_class:
         mock_emb_instance = Mock()
-        mock_emb_instance.embed_texts.return_value = [[0.1] * 384, [0.2] * 384]
-        mock_emb.return_value = mock_emb_instance
+        mock_emb_instance.embed_texts.return_value = [[0.1] * 384]
+        mock_emb_class.return_value = mock_emb_instance
         yield mock_emb_instance
-
 
 @pytest.fixture
 def mock_pinecone():
-    """Mock pour Pinecone"""
-    with patch("src.poject.services.vector_store.pinecone") as mock_pc:
+    """global mock for client pinecone & index"""
+    with patch("src.poject.services.vector_store.Pinecone") as mock_pc_class:
+        mock_pc_instance = Mock()
+        mock_pc_instance.list_indexes.return_value.names.return_value = ["test-index"]
+        
         mock_index = Mock()
-        mock_index.upsert.return_value = None
-        mock_index.query.return_value = {"matches": []}
+        mock_pc_instance.Index.return_value = mock_index
+        
+        mock_pc_class.return_value = mock_pc_instance
+        
+        yield mock_pc_instance, mock_index
 
-        mock_pc.init.return_value = None
-        mock_pc.list_indexes.return_value = ["test-index"]
-        mock_pc.Index.return_value = mock_index
-        mock_pc.create_index.return_value = None
-
-        yield mock_pc, mock_index
-
+@pytest.fixture
+def mock_llm():
+    """Mock pour LLMService - patch dans RAGPipeline"""
+    with patch("src.poject.services.rag_pipeline.LLMService") as mock_llm_class:
+        mock_llm_instance = Mock()
+        mock_llm_instance.chat.return_value = "Réponse simulée du LLM"
+        mock_llm_class.return_value = mock_llm_instance
+        yield mock_llm_instance
 
 @pytest.fixture
 def mock_s3():
@@ -72,19 +69,6 @@ def mock_s3():
         yield mock_s3
 
 
-@pytest.fixture
-def mock_llm():
-    """Mock pour le service LLM"""
-    with patch("src.poject.services.llm_service.LLMService") as mock_llm_class:
-        mock_llm_instance = Mock()
-        mock_llm_instance.chat.return_value = "Réponse simulée du LLM"
-        mock_llm_class.return_value = mock_llm_instance
-        yield mock_llm_instance
-
-
-# -------------------
-# Données exemples
-# -------------------
 @pytest.fixture
 def sample_documents():
     return [
@@ -103,3 +87,4 @@ def sample_documents():
 def sample_embeddings():
     """Embeddings simulés pour les tests"""
     return [[0.1] * 384, [0.2] * 384]
+

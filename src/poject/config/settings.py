@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     #     env_file = ".env"
     #     env_file_encoding = "utf-8"
 
-# New syntaxe in pydantic v2
+# New syntaxe pydantic v2
     model_config = ConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

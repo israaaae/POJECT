@@ -19,26 +19,25 @@ class IngestionService:
         logger.info("IngestionService initialized")
 
     def ingest_from_s3(self, s3_prefix: str = "", local_folder: str = settings.LOCAL_DATA_PATH):
-        """Télécharge depuis S3 et ingère en une seule opération"""
-        # Utiliser les valeurs par défaut de settings
+        """Downloading from s3"""
         logger.info("Downloading PDFs from S3...")
         self.s3.download_folder(s3_prefix, local_folder)
         self.ingest_from_local(local_folder)
 
     def ingest_from_local(self, folder: str):
-        """Charge les PDFs locaux, découpe, embed et upsert"""
+        """ingesting from local Pinecone"""
         logger.info("Loading local PDFs...")
         loader = DirectoryLoader(folder, glob="*.pdf", loader_cls=PyPDFLoader)
         docs = loader.load()
         logger.info("Loaded %d raw documents", len(docs))
-        # Découpage en chunks
+        # splitting to chunks
         chunks = self.splitter.split_documents(docs)
         logger.info("Produced %d chunks", len(chunks))
         # Embedding
         texts = [d.page_content for d in chunks]
         logger.info("Embedding documents...")
         embeddings = self.embedding.embed_texts(texts)
-        # Préparation des vecteurs
+        # Preparing vectors
         vectors = []
         for i, (vec, doc) in enumerate(zip(embeddings, chunks)):
             meta = {
@@ -47,7 +46,7 @@ class IngestionService:
                 "chunk_id": f"chunk_{i}"
             }
             vectors.append((f"doc_{i}", vec, meta))
-        # Upsert vers Pinecone
+        # Upsert to Pinecone
         logger.info("Uploading %d vectors to Pinecone...", len(vectors))
         self.store.fct_upsert(vectors) 
         

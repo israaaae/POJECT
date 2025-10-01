@@ -43,8 +43,7 @@ class S3Storage:
         keys = self.list_objects(prefix)
         for key in keys:
             if key.endswith("/"):
-                continue  # ignorer les dossiers virtuels
-            # garder la structure relative du prefix
+                continue 
             relative_path = os.path.relpath(key, prefix)
             local_path = os.path.join(local_dir, relative_path)
             self.download_file(key, local_path)

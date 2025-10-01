@@ -28,8 +28,6 @@ def chat():
             return {"success": False, "error": ve.errors()}, 400
 
         logger.info(f"Received question: '{req.question}', top_k={req.top_k}")
-
-        # Appel du pipeline RAG
         rag_pipeline = get_pipeline()
         answer = rag_pipeline.ask(req.question, top_k=req.top_k)
 
