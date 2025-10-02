@@ -20,3 +20,6 @@ The project includes a full pipeline with **automated testing**, **CI/CD via Git
 
 ## Testing
 - poetry run pytest -v
+
+## Project Structure
+```mermaid
