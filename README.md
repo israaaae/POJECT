@@ -22,6 +22,7 @@ The project includes a full pipeline with **automated testing**, **CI/CD via Git
 - poetry run pytest -v
 
 ## Project Structure
+```
 .github/
     └── workflows/
         └── cicd.yaml
@@ -77,3 +78,4 @@ pyproject.toml
 pytest.ini
 README.md
 score.csv
+```
