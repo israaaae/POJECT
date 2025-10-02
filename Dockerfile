@@ -17,7 +17,7 @@ COPY pyproject.toml poetry.lock* /app/
 COPY src /app/src
 COPY tests /app/tests
 
-RUN poetry install --no-interaction --no-ansi --with gunicorn && rm -rf $POETRY_CACHE_DIR
+RUN poetry install --no-root --no-dev && rm -rf $POETRY_CACHE_DIR
 
 EXPOSE 8080
 
