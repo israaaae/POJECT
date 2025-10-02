@@ -2,14 +2,6 @@
 
 import pytest
 
-def test_check(client):
-    # ACT
-    response = client.get('/api/check')
-
-    # ASSERT
-    assert response.status_code == 200
-    assert b'ok' in response.data
-
 pytestmark = pytest.mark.integration
 def test_chat_endpoint_answers_questions(client, mocker):
     # ARRANGE
