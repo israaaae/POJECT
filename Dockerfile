@@ -4,7 +4,6 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV POETRY_HOME="/opt/poetry"
 ENV PATH="$POETRY_HOME/bin:$PATH"
-ENV POETRY_CACHE_DIR=/tmp/poetry
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
@@ -16,8 +15,10 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 WORKDIR /app
 COPY pyproject.toml poetry.lock* /app/
 COPY src /app/src
+COPY tests /app/tests
 
-RUN poetry install --no-root --no-interaction --no-ansi && rm -rf $POETRY_CACHE_DIR
+RUN poetry install --no-interaction --no-ansi --with gunicorn && rm -rf $POETRY_CACHE_DIR
 
 EXPOSE 8080
+
 CMD ["poetry", "run", "gunicorn", "-b", "0.0.0.0:8080", "src.projet.api.app:app"]
