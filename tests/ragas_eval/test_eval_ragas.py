@@ -5,7 +5,7 @@ from ragas import evaluate
 from datasets import Dataset
 
 @pytest.mark.evaluation
-def test_rag_pipeline_eval():
+def test_eval_ragas():
 
     data = {
     "question": [

@@ -3,7 +3,6 @@ import pytest
 import numpy as np
 from unittest.mock import Mock, patch
 from langchain.docstore.document import Document
-from datasets import Dataset
 @pytest.fixture
 def app():
     """Application Flask pour les tests"""

@@ -4,7 +4,7 @@ from src.poject.services.rag_pipeline import RAGPipeline
 
 pytestmark = pytest.mark.integration
 
-def test_rag_pipeline_medical_integ(mock_embeddings, mock_pinecone, mock_llm):
+def test_rag_pipeline_integ(mock_embeddings, mock_pinecone, mock_llm):
     """Integration test with medical questions"""
     mock_pc_instance, mock_index = mock_pinecone
     pipeline = RAGPipeline()

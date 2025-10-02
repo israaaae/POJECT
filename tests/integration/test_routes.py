@@ -2,9 +2,9 @@
 
 import pytest
 
-def test_health_endpoint_returns_ok(client):
+def test_check(client):
     # ACT
-    response = client.get('/api/health')
+    response = client.get('/api/check')
 
     # ASSERT
     assert response.status_code == 200
@@ -27,7 +27,7 @@ def test_chat_endpoint_answers_questions(client, mocker):
     assert "Réponse" in data["answer"]
     mock_pipeline.return_value.ask.assert_called_once_with("Traitement pour l'hypertension ?", top_k=3)
 
-def test_index_endpoint_renders_template(client):
+def test_index_endpoint(client):
     # ACT
     response = client.get("/")
     

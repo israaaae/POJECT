@@ -3,7 +3,7 @@ import pytest
 from src.poject.services.llm_service import LLMService
 
 @pytest.mark.unit
-def test_llm_service_chat_returns_text(mocker):
+def test_llm_service(mocker):
     # ARRANGE
     mock_client = mocker.patch("src.poject.services.llm_service.OpenAI")
     

@@ -3,7 +3,7 @@ import pytest
 from src.poject.ingestion_data.storage import S3Storage
 
 @pytest.mark.unit
-def test_s3_storage_downloads_medical_pdf(mocker, tmp_path):
+def test_s3_storage(mocker, tmp_path):
     # Arrange
     mock_boto3 = mocker.patch("src.poject.ingestion_data.storage.boto3.client")
     mock_s3 = mock_boto3.return_value
