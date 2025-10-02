@@ -1,5 +1,5 @@
 # Medical Chatbot - RAG System
-An interactive chatbot powered by a **Retrieval-Augmented Generation (RAG)** pipeline, integrating **OpenAI**, **LangChain**, **Pinecone**, **AWS S3**, **Flask**.
+An interactive chatbot powered by a **Retrieval-Augmented Generation (RAG)** pipeline, integrating **OpenAI**, **LangChain**, **Pinecone**, **AWS S3** and **Flask**.
 The project includes a full pipeline with **automated testing**, **CI/CD via GitHub Actions**, **Docker**, and **deployment on AWS EC2**.
 
 ## Features
@@ -11,12 +11,12 @@ The project includes a full pipeline with **automated testing**, **CI/CD via Git
 - Unit, integration, and evaluation tests with **pytest** and **RAGAS**
 
 ## Installation
-1) git clone https://github.com/israaaae/End-to-End-Medical-RAG-Chatbot-Automated-Testing-CI-CD-with-GitHub-Actions-AWS.git
-2) cd End-to-End-Medical-RAG-Chatbot-Automated-Testing-CI-CD-with-GitHub-Actions-AWS
-3) poetry install
+- git clone https://github.com/israaaae/End-to-End-Medical-RAG-Chatbot-Automated-Testing-CI-CD-with-GitHub-Actions-AWS.git
+- cd End-to-End-Medical-RAG-Chatbot-Automated-Testing-CI-CD-with-GitHub-Actions-AWS
+- poetry install
 
 ## Run
-poetry run python -m src.poject.main
+- poetry run python -m src.poject.main
 
 ## Testing
-poetry run pytest -v
+- poetry run pytest -v
