@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     LLM_MODEL: str = "gpt-3.5-turbo"
     LOCAL_DATA_PATH:str = os.path.join(".", "data")
 
-    HOST: str = "127.0.0.1"
+    HOST: str = "0.0.0.0"
     PORT: int = 8080
     DEBUG: bool = True
 
