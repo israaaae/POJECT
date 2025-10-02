@@ -28,7 +28,7 @@ WORKDIR /app
 COPY pyproject.toml poetry.lock* /app/
 
 # 💡 Installer les dépendances Python
-RUN poetry install --no-root --no-dev --no-interaction
+RUN poetry install --no-root --without dev --no-interaction
 
 # 🧹 Supprimer le cache Poetry pour réduire la taille de l'image
 RUN rm -rf "$POETRY_HOME/cache"
