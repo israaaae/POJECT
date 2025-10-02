@@ -88,7 +88,7 @@ jobs:
 
       - name: Deploy Docker Container
         run: |
-          docker pull "${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest"
+          docker pull "${{ steps.login-ecr.outputs.registry }}/$ECR_REPO:latest"
           docker stop rag-app || true
           docker rm rag-app || true
           docker run -d \
@@ -102,5 +102,5 @@ jobs:
             -e PINECONE_INDEX="${{ secrets.PINECONE_INDEX }}" \
             -e S3_BUCKET="${{ secrets.S3_BUCKET }}" \
             -p 8080:8080 \
-            "${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest"
+            "${{ steps.login-ecr.outputs.registry }}/$ECR_REPO:latest"
           docker ps
