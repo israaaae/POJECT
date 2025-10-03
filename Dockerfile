@@ -42,17 +42,15 @@
 
 
 
-# Base Stage (Minimal)
-# Utilisé pour installer Poetry. Devient la base du Runner final.
+# ---------------- Base Stage ----------------
 FROM python:3.11-slim AS base
 
 ENV POETRY_HOME=/opt/poetry
 ENV PATH=${POETRY_HOME}/bin:${PATH}
 
-# Installer les outils APTS nécessaires pour installer Poetry
+# Installer curl pour Poetry
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-        curl \
+    && apt-get install --no-install-recommends -y curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -60,46 +58,38 @@ RUN apt-get update \
 RUN curl -sSL https://install.python-poetry.org | python3 - \
     && poetry --version
 
-# -----------------------------------------------------------
-# Builder Stage (Heavy Lifting)
-# Cette étape installe les dépendances Python et crée le Virtual Environment (.venv).
+# ---------------- Builder Stage ----------------
 FROM base AS builder
 
 WORKDIR /app
 
-# 1. INSTALLER LES OUTILS DE COMPILATION CRITIQUES ICI
-# Ces outils ne sont pas nécessaires au runtime et seront jetés après cette étape.
+# Installer outils de compilation pour dépendances Python
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-        git \
-        build-essential \
-        libffi-dev \
+    && apt-get install --no-install-recommends -y git build-essential libffi-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Copier uniquement fichiers de configuration pour tirer parti du cache Docker
 COPY poetry.lock pyproject.toml ./
-COPY README.md /app/
 
-# 2. Installer les dépendances Python dans un .venv dans le projet
+# Installer dépendances Python (sans installer le projet)
 RUN poetry config virtualenvs.in-project true \
-    && poetry install --no-interaction \
+    && poetry install --no-root --no-interaction \
     && rm -rf "$POETRY_HOME/cache"
 
-# -----------------------------------------------------------
-# Runner Stage (Final / Production)
-# Copie uniquement le code et l'environnement virtuel (.venv)
+# ---------------- Runner Stage ----------------
 FROM base AS runner
 
 WORKDIR /app
 
-# Copie le .venv de l'étape 'builder' vers l'étape 'runner'
+# Copier le virtualenv créé par le builder
 COPY --from=builder /app/.venv/ /app/.venv/
 
-# Copie le code source
-COPY src /app/src 
-# Retiré 'COPY . /app/' car il inclut potentiellement des fichiers inutiles
-# et utilise 'COPY src /app/src' qui est plus précis.
+# Copier le code source
+COPY src /app/src
 
-# 💡 Assurez-vous d'utiliser le binaire gunicorn du .venv copié
-# La syntaxe est cruciale pour pointer vers le chemin exact.
+# Exposer le port
+EXPOSE 8000
+
+# Lancer l'application avec gunicorn du virtualenv
 CMD ["/app/.venv/bin/gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "src.poject.api.app:app"]
