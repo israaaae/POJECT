@@ -118,5 +118,3 @@ EXPOSE 80
 
 # Lancer l'application
 CMD ["/app/.venv/bin/python", "-m", "gunicorn", "-w", "4", "-b", "0.0.0.0:80", "src.poject.api.app:app"]
-
-
