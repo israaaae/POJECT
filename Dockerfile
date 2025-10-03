@@ -75,6 +75,7 @@ RUN apt-get update \
 
 # Copier uniquement fichiers de configuration pour tirer parti du cache Docker
 COPY poetry.lock pyproject.toml ./
+COPY README.md /app/
 
 # 2. Installer dépendances Python
 # CORRECTION CLÉ : Retrait de --no-root et utilisation de --only main
