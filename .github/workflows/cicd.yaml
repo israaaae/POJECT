@@ -30,7 +30,7 @@ jobs:
           ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
           IMAGE_TAG: latest
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build --no-cache -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
@@ -56,6 +56,12 @@ jobs:
         with:
           mask-password: true
 
+      - name: Stop and remove existing container
+        run: |
+          docker stop fghfgh || true
+          docker rm fghfgh || true
+          docker rmi "${{ steps.login-ecr.outputs.registry }}/$ECR_REPOSITORY:latest" || true
+
       - name: Deploy Docker Container
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -68,7 +74,7 @@ jobs:
           S3_BUCKET: ${{ secrets.S3_BUCKET }}
         run: |
           docker run -d \
-            --name fghfgh \
+            --name hhhhhhh \
             -e AWS_ACCESS_KEY_ID \
             -e AWS_SECRET_ACCESS_KEY \
             -e AWS_DEFAULT_REGION \
