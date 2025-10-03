@@ -81,7 +81,7 @@ COPY poetry.lock pyproject.toml ./
 
 # 2. Installer les dépendances Python dans un .venv dans le projet
 RUN poetry config virtualenvs.in-project true \
-    && poetry install --no-interaction \
+    && poetry install --no-root --no-interaction \
     && rm -rf "$POETRY_HOME/cache"
 
 # -----------------------------------------------------------
