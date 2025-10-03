@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.11-slim-buster
 
 # ⚡ Variables d'environnement
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -42,4 +42,4 @@ COPY tests /app/tests
 EXPOSE 8080
 
 # 🚀 Lancer l'application avec gunicorn
-CMD ["gunicorn", "-b", "0.0.0.0:8080", "poject.api.app:app"]
+CMD ["poetry", "run", "gunicorn", "-b", "0.0.0.0:8080", "src.poject.api.app:app"]
