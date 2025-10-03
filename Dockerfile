@@ -114,9 +114,9 @@ RUN poetry config virtualenvs.in-project true \
     && rm -rf "$POETRY_HOME/cache"
 
 # Exposer le port
-EXPOSE 8080
+EXPOSE 80
 
 # Lancer l'application
-CMD [".venv/bin/gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "src.poject.api.app:app"]
+CMD ["poetry", "run", "gunicorn", "-w", "4", "-b", "0.0.0.0:80", "src.poject.api.app:app"]
 
 
