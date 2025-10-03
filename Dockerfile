@@ -41,8 +41,6 @@
 
 
 
-
-# ---------------- Base Stage ----------------
 FROM python:3.11-slim AS base
 
 ENV POETRY_HOME=/opt/poetry
@@ -63,18 +61,25 @@ FROM base AS builder
 
 WORKDIR /app
 
-# Installer outils de compilation pour dépendances Python
+# 1. Installer outils de compilation pour dépendances Python
+# Ajout de dépendances courantes qui font échouer la compilation (libssl-dev, zlib1g-dev)
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y git build-essential libffi-dev \
+    && apt-get install --no-install-recommends -y \
+        git \
+        build-essential \
+        libffi-dev \
+        libssl-dev \
+        zlib1g-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Copier uniquement fichiers de configuration pour tirer parti du cache Docker
 COPY poetry.lock pyproject.toml ./
 
-# Installer dépendances Python (sans installer le projet)
+# 2. Installer dépendances Python
+# CORRECTION CLÉ : Retrait de --no-root et utilisation de --only main
 RUN poetry config virtualenvs.in-project true \
-    && poetry install --no-root --no-interaction \
+    && poetry install --only main --no-interaction \
     && rm -rf "$POETRY_HOME/cache"
 
 # ---------------- Runner Stage ----------------
@@ -83,6 +88,7 @@ FROM base AS runner
 WORKDIR /app
 
 # Copier le virtualenv créé par le builder
+# Cette ligne devrait maintenant fonctionner si le .venv est créé correctement.
 COPY --from=builder /app/.venv/ /app/.venv/
 
 # Copier le code source
