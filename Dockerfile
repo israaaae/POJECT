@@ -110,8 +110,11 @@ COPY src ./src
 
 # Installer les dépendances
 RUN poetry config virtualenvs.in-project true \
-    && poetry install --only main --no-interaction \
-    && rm -rf "$POETRY_HOME/cache"
+    && poetry config cache-dir /tmp \
+    && poetry install --only main --no-interaction --no-cache \
+    && rm -rf "$POETRY_HOME/cache" \
+    && rm -rf /tmp/pypoetry \
+    && rm -rf /root/.cache/pypoetry
 
 # Exposer le port
 EXPOSE 80
