@@ -1,15 +1,10 @@
-FROM python:3.11-slim-buster
-
+FROM python:3.11-buster
 # ⚡ Variables d'environnement
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV POETRY_HOME="/opt/poetry"
-ENV POETRY_VIRTUALENVS_CREATE=false
-ENV POETRY_VIRTUALENVS_IN_PROJECT=false
 ENV PATH="$POETRY_HOME/bin:$PATH"
 
-# 🛠 Installer les dépendances système nécessaires
-# 🛠 Installer les dépendances système nécessaires
 # 🛠 Installer les dépendances système nécessaires
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
