@@ -10,16 +10,15 @@ ENV PATH="$POETRY_HOME/bin:$PATH"
 
 # 🛠 Installer les dépendances système nécessaires
 # 🛠 Installer les dépendances système nécessaires
+# 🛠 Installer les dépendances système nécessaires
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     git \
     build-essential \
-    cmake \
     libffi-dev \
-    # RETIRER: libblas-dev \
-    # RETIRER: liblapack-dev \
     wget \
     && rm -rf /var/lib/apt/lists/*
+# cmake removed here ⬆️
 
 # 📦 Installer Poetry
 RUN curl -sSL https://install.python-poetry.org | python3 -
