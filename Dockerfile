@@ -78,10 +78,11 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY poetry.lock pyproject.toml ./
+COPY README.md /app/
 
 # 2. Installer les dépendances Python dans un .venv dans le projet
 RUN poetry config virtualenvs.in-project true \
-    && poetry install --no-root --no-interaction \
+    && poetry install --no-interaction \
     && rm -rf "$POETRY_HOME/cache"
 
 # -----------------------------------------------------------
