@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     LOCAL_DATA_PATH:str = os.path.join(".", "data")
 
     HOST: str = "0.0.0.0"
-    PORT: int = 8080
+    PORT: int = 443
     DEBUG: bool = True
 
     # class Config:
