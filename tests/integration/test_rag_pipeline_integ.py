@@ -32,7 +32,7 @@ def test_rag_pipeline_integ(mock_embeddings, mock_pinecone, mock_llm):
     # Assert
     assert "hypertension" in answer.lower()
     assert any(keyword in answer.lower() for keyword in ["traitement", "médicament", "inhibiteurs", "sel"])
-    # Vérifications des appels
+
     mock_embeddings.embed_texts.assert_called_once_with(["Traitement pour l'hypertension ?"])
     mock_index.query.assert_called_once_with(vector=[0.1, 0.2, 0.3], top_k=3, include_metadata=True)
     mock_llm.chat.assert_called_once()

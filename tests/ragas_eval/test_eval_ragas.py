@@ -37,5 +37,5 @@ def test_eval_ragas():
     )
 
     df = result.to_pandas()
-    df.to_csv('score.csv', index=False)
+    df.to_csv('ragas_score.csv', index=False)
 

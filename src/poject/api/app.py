@@ -20,5 +20,5 @@ def create_app():
 
     return app
 
-# Variable pour gunicorn
+
 app = create_app()

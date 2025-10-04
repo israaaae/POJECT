@@ -21,7 +21,7 @@ def mock_sentence_transformers(monkeypatch):
     """Mock global pour SentenceTransformer (évite de charger un vrai modèle)"""
     fake_model = Mock()
     fake_model.encode.return_value = np.array([[0.1, 0.2, 0.3]])
-    # Toute tentative d’instancier SentenceTransformer() dans le code test sera remplacée par fake_model
+
     monkeypatch.setattr("sentence_transformers.SentenceTransformer",lambda *args, **kwargs: fake_model)
     return fake_model 
 

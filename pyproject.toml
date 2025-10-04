@@ -3,7 +3,7 @@ name = "poject"
 version = "0.1.0"
 description = "End-to-End Medical RAG Chatbot | Automated Testing & CI/CD with GitHub Actions + AWS"
 authors = [
-    {name = "Israe KHOUI",email = "israekhoui9@gmail.com"}
+    {name = "Israe KHOUI",email = "israekhoui10@gmail.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.11,<3.14"

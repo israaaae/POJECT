@@ -19,20 +19,7 @@ class RAGPipeline:
         for m in matches:
             meta = m.get("metadata", {})
             text = meta.get("text") or meta.get("content") or meta.get("source", "")
-            context_parts.append(f"Source: {meta.get('source', '')}\n{text}\n") # context_parts contient le partie 'text' des 3 matches returnés
-        context = "\n".join(context_parts)[:3000]  # limit prompt size
+            context_parts.append(f"Source: {meta.get('source', '')}\n{text}\n") 
+        context = "\n".join(context_parts)[:3000]  
         prompt = f"Context:\n{context}\n\nQuestion: {question}\nAnswer succinctly and medically accurate."
         return self.llm.chat(prompt)
-
-
-# LLM recoit une prompt de type :
-# Context:
-# Source: article1.pdf
-# La grippe est une infection virale courante.
-# ---
-# Source: article2.pdf
-# Les symptômes incluent fièvre, toux et fatigue.
-# ---
-
-# Question: Quels sont les symptômes de la grippe ?
-# Answer succinctly and medically accurate.

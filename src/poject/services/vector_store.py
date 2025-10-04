@@ -22,7 +22,7 @@ class PineconeStore:
                 "Index %s not found in Pinecone. Create it in Pinecone console beforehand.",
                 self.index_name
             )
-        self.index = self.pc.Index(self.index_name)  # Index: I en majuscule
+        self.index = self.pc.Index(self.index_name)  # I maj
 
     def fct_upsert(self, vectors: Sequence[Tuple[str, List[float], dict]]) -> None:
         """Upsert list of (id, vector, metadata)"""

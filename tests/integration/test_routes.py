@@ -3,7 +3,7 @@
 import pytest
 
 pytestmark = pytest.mark.integration
-def test_chat_endpoint_answers_questions(client, mocker):
+def test_chat_endpoint(client, mocker):
     # ARRANGE
     mock_pipeline = mocker.patch("src.poject.api.routes.get_pipeline")
     mock_pipeline.return_value.ask.return_value = "Réponse à votre question médicale"
