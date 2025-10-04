@@ -120,4 +120,4 @@ RUN poetry config virtualenvs.in-project true \
 EXPOSE 8080
 
 # Lancer l'application
-CMD ["/app/.venv/bin/gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "src.poject.api.app:create_app()"]
+CMD ["/app/.venv/bin/gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "src.poject.api.app:app"]

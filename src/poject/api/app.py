@@ -19,3 +19,6 @@ def create_app():
         return render_template("index.html")
 
     return app
+
+# Variable pour gunicorn
+app = create_app()
